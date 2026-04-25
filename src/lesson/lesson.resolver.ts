@@ -2,11 +2,17 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { LessonType } from './lesson.type';
 import { LessonService } from './lesson.service';
 import { Lesson } from './lesson.entity';
+import { CreateLessonInput } from './lesson.input';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 @Resolver(() => LessonType)
 export class LessonResolver {
   constructor(private lessonService: LessonService) {}
+
+  @Query(() => [LessonType])
+  async lessonAll(): Promise<Lesson[]> {
+    return await this.lessonService.getAllLesson();
+  }
 
   @Query(() => LessonType)
   async lesson(@Args('id') id: string): Promise<Lesson> {
@@ -15,10 +21,8 @@ export class LessonResolver {
 
   @Mutation(() => LessonType)
   async createLesson(
-    @Args('name') name: string,
-    @Args('startDate') startDate: string,
-    @Args('endDate', { nullable: true }) endDate: string,
+    @Args('createLessonInput') createLessonInput: CreateLessonInput,
   ) {
-    return await this.lessonService.createLesson(name, startDate, endDate);
+    return await this.lessonService.createLesson(createLessonInput);
   }
 }
