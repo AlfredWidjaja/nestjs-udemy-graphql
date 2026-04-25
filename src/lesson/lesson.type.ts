@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ID, ObjectType, Field } from '@nestjs/graphql';
+import { StudentType } from 'src/student/student.type';
 
 @ObjectType()
 export class LessonType {
@@ -14,4 +15,7 @@ export class LessonType {
 
   @Field({ nullable: true })
   endDate?: string;
+
+  @Field(() => [StudentType])
+  students?: string[];
 }
